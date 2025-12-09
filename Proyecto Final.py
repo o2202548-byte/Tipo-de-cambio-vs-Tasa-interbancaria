@@ -9,7 +9,7 @@ import urllib
 from sqlalchemy import create_engine, text
 import streamlit as st
 
-# CONFIGURACIÓN PRINCIPAL BANXICO
+# Configuracion principal banxico
 
 TOKEN = "f53ab21f2bb4688face839292514375d74bbfe726d4d8a36ff7637a633032f87"
 SERIES = "SF43718,SF46410"
@@ -23,7 +23,7 @@ if not os.path.exists(CARPETA):
 
 URL_API = f"https://www.banxico.org.mx/SieAPIRest/service/v1/series/{SERIES}/datos/{FECHA_INICIO}/{FECHA_FIN}?token={TOKEN}"
 
-# CONEXIÓN SQL SERVER
+# Conexion sql server
 
 SERVIDOR = r'DRIPPY\SQLEXPRESS'
 BASE_DATOS = 'banxico'
@@ -37,7 +37,7 @@ params = urllib.parse.quote_plus(
 
 engine = create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
 
-# FUNCIONES SQL
+# Funciones sql
 
 def asegurar_series(engine, nombres_series):
     """Inserta las series en la tabla 'series' si no existen."""
@@ -56,7 +56,7 @@ def asegurar_series(engine, nombres_series):
             else:
                 print(f"Serie '{nombre}' ya existe.")
 
-# FUNCIONES DE PROCESAMIENTO DE DATOS
+# Funciones 
 
 def bajar_datos(url):
     try:
@@ -126,7 +126,7 @@ def guardar_csv_y_sql(json_datos, carpeta, nombres, engine=None):
         return df_combinado
     return None
 
-# DASHBOARD STREAMLIT
+# Dashboards de streamlit
 
 def dashboard():
     st.set_page_config(page_title="Banxico Dashboard", layout="wide")
@@ -203,7 +203,7 @@ def dashboard():
         st.markdown("**Últimos 5 registros:**")
         st.write(combinado.tail())
 
-# EJECUCIÓN PRINCIPAL
+# Ejecucion del main
 
 if __name__ == "__main__":
     asegurar_series(engine, {"cambio": "Tipo de Cambio MXN/USD", "tasa": "Tasa Interbancaria promedio diaria"})
