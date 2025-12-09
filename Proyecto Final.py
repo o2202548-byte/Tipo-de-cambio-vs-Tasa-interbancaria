@@ -20,7 +20,7 @@ FECHA_FIN = datetime.now().strftime("%Y-%m-%d")
 CARPETA = "datos_banxico"
 if not os.path.exists(CARPETA):
     os.makedirs(CARPETA)
-
+    
 URL_API = f"https://www.banxico.org.mx/SieAPIRest/service/v1/series/{SERIES}/datos/{FECHA_INICIO}/{FECHA_FIN}?token={TOKEN}"
 
 # Conexion sql server
@@ -92,7 +92,7 @@ def guardar_csv_y_sql(json_datos, carpeta, nombres, engine=None):
         df[nombre] = pd.to_numeric(df[nombre], errors="coerce")
         df["Fecha"] = pd.to_datetime(df["Fecha"], errors="coerce", dayfirst=True).dt.date
         df = df.dropna(subset=[nombre, "Fecha"])
-
+        
         path_csv = os.path.join(carpeta, f"{nombre}.csv")
         df.to_csv(path_csv, index=False)
         print(f"{nombre}: {len(df)} registros guardados en {path_csv}")
@@ -129,10 +129,10 @@ def guardar_csv_y_sql(json_datos, carpeta, nombres, engine=None):
 # Dashboards de streamlit
 
 def dashboard():
-    st.set_page_config(page_title="Banxico Dashboard", layout="wide")
+    st.set_page_/config(page_title="Banxico Dashboard", layout="wide")
     st.title("Dashboard Financiero Banxico")
     st.markdown("Visualización de la evolución del Tipo de Cambio y la Tasa Interbancaria.")
-
+    
     def cargar_csv(nombre):
         ruta = os.path.join(CARPETA, nombre)
         if os.path.exists(ruta):
@@ -158,12 +158,12 @@ def dashboard():
     cambio = cargar_csv("cambio.csv")
     tasa = cargar_csv("tasa.csv")
     combinado = cargar_csv("cambio_vs_tasa.csv")
-
     st.header("1️. Evolución histórica")
+    
     if cambio is not None and tasa is not None:
         graficar(cambio, tasa, "Tipo de Cambio vs Tasa Interbancaria", "Tipo de Cambio", "Tasa Interbancaria")
-
     st.header("2️. Variación diaria")
+    
     if combinado is not None:
         combinado_diff = combinado.copy()
         combinado_diff["cambio_var"] = combinado_diff["cambio"].pct_change() * 100
